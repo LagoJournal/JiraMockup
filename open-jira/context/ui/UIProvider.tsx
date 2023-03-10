@@ -2,11 +2,15 @@ import { FC, useReducer } from "react";
 import { UIContext, uiReducer } from "./";
 
 export interface UIState {
-  sidemenuopen: boolean;
+  sidemenuOpen: boolean;
+  isAddingEntry: boolean;
+  isDragging: boolean;
 }
 
 export const UI_INITIAL_STATE: UIState = {
-  sidemenuopen: false,
+  sidemenuOpen: false,
+  isAddingEntry: false,
+  isDragging: false,
 };
 
 type Props = {
@@ -17,19 +21,30 @@ export const UIProvider: FC<Props> = ({ children }) => {
   const [state, dispatch] = useReducer(uiReducer, UI_INITIAL_STATE);
 
   const openSideMenu = () => {
-    dispatch({ type: "UI - Open Sidebar" });
+    dispatch({ type: "[UI] Open Sidebar" });
   };
 
   const closeSideMenu = () => {
-    dispatch({ type: "UI - Close Sidebar" });
+    dispatch({ type: "[UI] Close Sidebar" });
+  };
+
+  const setIsAddingEntry = () => {
+    dispatch({ type: "[UI] Toggle isAddingEntry" });
+  };
+
+  const setIsDragging = () => {
+    dispatch({ type: "[UI] Toggle isDragging" });
   };
 
   return (
     <UIContext.Provider
       value={{
-        sidemenuOpen: state.sidemenuopen,
+        ...state,
+
         openSideMenu,
         closeSideMenu,
+        setIsAddingEntry,
+        setIsDragging,
       }}
     >
       {children}
