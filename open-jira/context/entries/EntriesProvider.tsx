@@ -11,21 +11,21 @@ export const Entries_INITIAL_STATE: EntriesState = {
   entries: [
     {
       _id: uuidv4(),
-      description: "Elit duis consectetur enim occaecat voluptate officia.",
+      description: "P - Elit duis consectetur enim occaecat voluptate officia.",
       status: "pending",
       createdAt: Date.now(),
     },
     {
       _id: uuidv4(),
       description:
-        "Proident veniam dolore enim incididunt fugiat adipisicing in cillum ad ullamco labore sunt aliquip anim.",
+        "IP - Proident veniam dolore enim incididunt fugiat adipisicing in cillum ad ullamco labore sunt aliquip anim.",
       status: "in-progress",
       createdAt: Date.now() - 100000,
     },
     {
       _id: uuidv4(),
       description:
-        "Voluptate consectetur dolore Lorem adipisicing qui proident veniam occaecat id commodo in veniam fugiat sit.",
+        "F - Voluptate consectetur dolore Lorem adipisicing qui proident veniam occaecat id commodo in veniam fugiat sit.",
       status: "finished",
       createdAt: Date.now() - 1000000,
     },
