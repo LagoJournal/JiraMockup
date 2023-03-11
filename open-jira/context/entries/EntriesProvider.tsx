@@ -8,28 +8,7 @@ export interface EntriesState {
 }
 
 export const Entries_INITIAL_STATE: EntriesState = {
-  entries: [
-    {
-      _id: uuidv4(),
-      description: "P - Elit duis consectetur enim occaecat voluptate officia.",
-      status: "pending",
-      createdAt: Date.now(),
-    },
-    {
-      _id: uuidv4(),
-      description:
-        "IP - Proident veniam dolore enim incididunt fugiat adipisicing in cillum ad ullamco labore sunt aliquip anim.",
-      status: "in-progress",
-      createdAt: Date.now() - 100000,
-    },
-    {
-      _id: uuidv4(),
-      description:
-        "F - Voluptate consectetur dolore Lorem adipisicing qui proident veniam occaecat id commodo in veniam fugiat sit.",
-      status: "finished",
-      createdAt: Date.now() - 1000000,
-    },
-  ],
+  entries: [],
 };
 
 type Props = {
