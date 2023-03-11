@@ -16,12 +16,28 @@ export default async function handler(
   }
 
   switch (req.method) {
+    case "GET":
+      return getEntry(req, res);
     case "PUT":
       return updateEntry(req, res);
     default:
       return res.status(400).json({ message: "Invalid Request" });
   }
 }
+
+const getEntry = async (req: NextApiRequest, res: NextApiResponse<Data>) => {
+  const { id } = req.query;
+
+  await db.connect();
+
+  const entry = await Entry.findById(id);
+
+  if (!entry) {
+    await db.disconnect();
+    return res.status(400).json({ message: "ID not found" });
+  }
+  return res.status(200).json(entry!);
+};
 
 const updateEntry = async (req: NextApiRequest, res: NextApiResponse<Data>) => {
   const { id } = req.query;
