@@ -19,17 +19,18 @@ import {
 import SaveOutlinedIcon from "@mui/icons-material/SaveOutlined";
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
 import { Layout } from "../../components/layouts";
-import { EntryStatus } from "../../interfaces";
-
-import { isValidObjectId } from "mongoose";
+import { Entry, EntryStatus } from "../../interfaces";
+import { dbEntries } from "../../database";
 
 const validStatus: EntryStatus[] = ["pending", "in-progress", "finished"];
 
-interface Props {}
+interface Props {
+  entry: Entry;
+}
 
-export const EntryPage: FC = (props) => {
-  const [input, setInput] = useState("");
-  const [status, setStatus] = useState<EntryStatus>("pending");
+export const EntryPage: FC<Props> = ({ entry }) => {
+  const [input, setInput] = useState(entry.description);
+  const [status, setStatus] = useState<EntryStatus>(entry.status);
   const [touched, setTouched] = useState(false);
 
   const check = useMemo(() => input.length <= 0 && touched, [touched, input]);
@@ -45,13 +46,13 @@ export const EntryPage: FC = (props) => {
   const handleSave = () => {};
 
   return (
-    <Layout title="/////////">
+    <Layout title={input.substring(0, 20) + "..."}>
       <Grid container justifyContent="center" sx={{ marginTop: 2 }}>
         <Grid item xs={12} sm={8} md={6}>
           <Card>
             <CardHeader
-              title={`Entry: ${input}`}
-              subheader={`Created .... mins ago`}
+              title={`Entry:`}
+              subheader={`Created ${entry.createdAt} mins ago`}
             />
             <CardContent>
               <TextField
@@ -114,7 +115,9 @@ export const EntryPage: FC = (props) => {
 export const getServerSideProps: GetServerSideProps = async ({ params }) => {
   const { id } = params as { id: string };
 
-  if (!isValidObjectId(id)) {
+  const entry = await dbEntries.getEntryByID(id);
+
+  if (!entry) {
     return {
       redirect: {
         destination: "/",
@@ -123,7 +126,7 @@ export const getServerSideProps: GetServerSideProps = async ({ params }) => {
     };
   }
   return {
-    props: { id },
+    props: { entry },
   };
 };
 
