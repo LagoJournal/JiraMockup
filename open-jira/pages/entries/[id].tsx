@@ -1,4 +1,4 @@
-import { ChangeEvent, FC, useMemo, useState } from "react";
+import { ChangeEvent, FC, useContext, useMemo, useState } from "react";
 import { GetServerSideProps } from "next";
 import {
   capitalize,
@@ -21,6 +21,7 @@ import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined
 import { Layout } from "../../components/layouts";
 import { Entry, EntryStatus } from "../../interfaces";
 import { dbEntries } from "../../database";
+import { EntriesContext } from "../../context/entries";
 
 const validStatus: EntryStatus[] = ["pending", "in-progress", "finished"];
 
@@ -29,6 +30,7 @@ interface Props {
 }
 
 export const EntryPage: FC<Props> = ({ entry }) => {
+  const { updateEntry } = useContext(EntriesContext);
   const [input, setInput] = useState(entry.description);
   const [status, setStatus] = useState<EntryStatus>(entry.status);
   const [touched, setTouched] = useState(false);
@@ -43,7 +45,17 @@ export const EntryPage: FC<Props> = ({ entry }) => {
     setStatus(e.target.value as EntryStatus);
   };
 
-  const handleSave = () => {};
+  const handleSave = () => {
+    if (input.trim().length === 0) return;
+
+    const updatedEntry: Entry = {
+      ...entry,
+      status,
+      description: input,
+    };
+
+    updateEntry(updatedEntry, true);
+  };
 
   return (
     <Layout title={input.substring(0, 20) + "..."}>
